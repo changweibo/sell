@@ -15,6 +15,7 @@ export default new Router({
   // 改变路由激活是的class名称
   linkActiveClass: 'active',
   routes: [
+    {path: '/',redirect:'/goods'},
     {
       path: '/',
       name: 'header',
