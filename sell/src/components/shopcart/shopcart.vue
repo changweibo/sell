@@ -20,8 +20,8 @@
             </div>
         </div>
         <div class="ball-container">
-            <div v-for="(ball,index) in balls" :key="index">
-                <transition name="drop" v-on:before-enter="beforeEnter" v-on:enter="enter" v-on:after-enter="afterEnter">
+            <div v-for="ball in balls" :key="ball.id">
+                <transition name="drop" @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter">
                     <div class="ball" v-show="ball.show">
                         <div class="inner inner-hook"></div>
                     </div>
@@ -42,7 +42,7 @@
                                 <span>￥{{food.price*food.count}}</span>
                             </div>
                             <div class="cartcontrol-wrapper">
-                                <cartcontrol :food="food" name="cartcontrol"></cartcontrol>
+                                <cartcontrol  :food="food" name="cartcontrol"></cartcontrol>
                             </div>
                         </li>
                     </ul>
@@ -100,7 +100,7 @@ export default {
                 show:false
             }
           ],
-          dropBall: [],
+          dropBalls: [],
           fold: true
         };
         
@@ -165,7 +165,7 @@ export default {
                     if(!ball.show){
                         ball.show = true;
                         ball.el = el;
-                        this.dropBall.push(ball);
+                        this.dropBalls.push(ball);
                         return;
                     }
                 }
@@ -190,9 +190,8 @@ export default {
                 }
                 window.alert(`支付${this.totalPrice}元`);
             },
-             beforeEnter(el) {
+             beforeEnter(el,done) {
                     let count=this.balls.length;
-                    console.log(count)
                     while(count--){
                         let ball=this.balls[count];
                         if(ball.show){
@@ -208,7 +207,7 @@ export default {
                         }
                     }
                 },
-                enter(el){
+                enter(el,done){
                     let rf = el.offsetHeight;
                     this.$nextTick(() => {
                         el.style.webkitTransform='translate3d(0,0,0)';
@@ -216,7 +215,7 @@ export default {
                         let inner=el.getElementsByClassName('inner-hook')[0];
                         inner.style.webkitTransform='translate3d(0,0,0)';
                         inner.style.transform='translate3d(0,0,0)';
-                        el.addEventListener('transitionend',done);
+                        // el.addEventListener('transitionend',done);
                     })
                 },
                 afterEnter(el) {
@@ -371,13 +370,19 @@ export default {
                 left 32px
                 bottom 22px
                 z-index 200
-                transition all 0.4s cubic-bezier(0.49,-0.29,0.75,0.41)
+                &.drop-enter-active
+                    transition all 0.4s cubic-bezier(0.49,-0.29,0.75,0.41)
                 .inner
                   width 16px
                   height 16px
                   border-radius 50%
                   background rgb(0,160,220)
                   transition all 0.4s linear 
+                // .drop-enter-active,&.drop-leave-active 
+                //     transition all 0.4s cubic-bezier(0.49,-0.29,0.75,0.41) 
+                //         .inner
+                //             transition all 0.4s linear  
+                
         .shopcart-list
             position absolute
             left 0

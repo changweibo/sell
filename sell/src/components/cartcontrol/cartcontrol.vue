@@ -30,7 +30,7 @@
                     this.food.count++;
                 }
                 // console.log(event)
-                // this.$emit('cart.add',event.target);
+                this.$emit('cart.add',event.target);
 
             },
             decreaseCart(event) {

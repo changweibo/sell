@@ -29,7 +29,7 @@
                                     <span class="now">￥{{food.price}}</span><span class="old" v-show="food.oldPrice">￥{{food.oldPrice}}</span>
                                 </div>
                                 <div class="cartcontrol-wrapper">
-                                    <cartcontrol :food="food"></cartcontrol>
+                                    <cartcontrol :food="food" v-on:cart-add="_drop" ></cartcontrol>
                                 </div>
                             </div>
                         </li>
@@ -94,7 +94,7 @@
               if(response.error===ERR_OK){
                   this.goods=response.data;
               }
-              console.log(response.data);
+            //   console.log(response.data);
               this.goods=response.data;
               this.$nextTick(() => {
                   this._initScroll();
@@ -121,6 +121,12 @@
               this.$refs.food.show();
           },
           _drop(target) {
+              //体验优化，异步执行下落动画
+              this.$nextTick(() => {
+                  this.$refs.shopcart.drop(target);
+              })
+          },
+          cartAdd(target) {
               //体验优化，异步执行下落动画
               this.$nextTick(() => {
                   this.$refs.shopcart.drop(target);
